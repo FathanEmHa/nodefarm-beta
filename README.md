@@ -86,7 +86,7 @@ Open [http://localhost:3000](http://localhost:3000) and you're good.
 
 ## Screenshots
 
-<img width="1366" height="768" alt="Screenshot from 2026-04-03 12-31-59" src="https://github.com/user-attachments/assets/409b4194-2589-4902-bbc6-413febb741b4" />
+<img width="1366" height="768" alt="Screenshot from 2026-05-11 14-08-50" src="https://github.com/user-attachments/assets/f224cf9d-2cce-4578-b652-365b31c211e3" />
 
 ---
 
