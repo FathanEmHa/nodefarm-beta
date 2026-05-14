@@ -1,4 +1,4 @@
-# 🌱 Onchain Farming Tracker — Beta Preview
+# 🌱 NodeFarm — Onchain Farming Tracker (Beta Preview)
 
 > **⚠️ This is a UI prototype only.**
 > No real data, no backend, no blockchain connection.
@@ -6,9 +6,42 @@
 
 ---
 
-## What is this?
+## The Problem
 
-This repo is a **beta/demo version** of an onchain airdrop farming tracker that's currently in active development.
+If you've ever actively farmed airdrops, you've felt this:
+
+- You're active across multiple protocols, your transaction count is in the hundreds — but you have no idea if your activity is actually *enough* to qualify
+- **DeBank** is great for portfolio view, but it doesn't tell you your farming score on Protocol X
+- **Dune Analytics** is powerful, but requires writing SQL — most farmers can't do that
+- **Twitter/X** is full of noise, nothing actionable
+- You're managing 5, 10, 20+ wallets across different campaigns with no structured way to track any of it
+- Protocol requirements keep changing, and there's no early warning when your wallet starts looking bot-like
+
+Nobody has answered this question well:
+
+> *"Is my wallet active enough — and what exactly should I do next to maximize eligibility?"*
+
+---
+
+## The Solution
+
+**NodeFarm** is an onchain intelligence platform built specifically for airdrop hunters and DeFi power users.
+
+Instead of raw data dumps, NodeFarm gives you:
+
+- **Farming score per wallet, per protocol, per network** — know exactly where you stand
+- **Activity intelligence** — your transactions parsed into meaningful actions (SWAP, BRIDGE, MINT, STAKE) with organic vs bot-like pattern detection
+- **Task engine** — curated checklists per protocol with real progress tracking ("8/10 swaps completed")
+- **Multi-wallet dashboard** — manage and group all your wallets across campaigns in one place
+- **AI insights** — powered by LLM, giving actionable recommendations in plain language
+
+The core idea: **you connect your wallet, we do the analysis, you know what to do next.**
+
+---
+
+## What is this repo?
+
+This is a **beta/demo version** — a UI prototype built before the real backend exists.
 
 The goal of this prototype is to:
 - Visualize the product direction and UI/UX before building the real thing
@@ -36,6 +69,36 @@ The **full version** will include real blockchain indexing, wallet sync via RPC,
 
 ---
 
+## How It Will Work (Full Version)
+
+```
+User adds wallet address
+        │
+        ▼
+App stores wallet → triggers background sync job
+        │
+        ▼
+RPC call to Alchemy/QuickNode — fetches all transactions
+        │
+        ▼
+Indexer parses raw tx → activities (SWAP, BRIDGE, STAKE, MINT...)
+        │
+        ▼
+Rule engine evaluates activities against task requirements
+"SyncSwap Volume Target needs 10x SWAP on Linea → found 8"
+        │
+        ▼
+Dashboard shows: 8/10 swaps — 80% — IN PROGRESS
+        │
+        ▼
+AI layer analyzes behavior → actionable insight
+"This wallet needs more bridge activity to look organic"
+```
+
+Tasks are curated by the NodeFarm team based on protocol research — no manual input needed from users. Connect wallet, get insight, know what to do next.
+
+---
+
 ## Tech Stack (Beta)
 
 - **Framework** — Next.js 14 (App Router)
@@ -43,6 +106,21 @@ The **full version** will include real blockchain indexing, wallet sync via RPC,
 - **UI Components** — shadcn/ui
 - **Data** — Hardcoded mock data (`/lib/mock-data.ts`)
 - **No backend, no database, no external API**
+
+---
+
+## Tech Stack (Full Version — Planned)
+
+| Layer | Stack |
+|---|---|
+| Frontend | Next.js 14 (App Router) |
+| Database | PostgreSQL via Supabase |
+| Auth | NextAuth + SIWE (wallet login) |
+| Background Jobs | Trigger.dev |
+| Queue / Cache | Upstash Redis |
+| Blockchain RPC | Alchemy / QuickNode |
+| AI Layer | Gemini LLM via Vercel AI SDK |
+| Payments | Stripe |
 
 ---
 
@@ -113,15 +191,15 @@ This is early stage. If you're reading this and have thoughts — on the UI, the
 Specifically interested in feedback from:
 - Active airdrop farmers who feel the pain this is trying to solve
 - Developers who've built similar tooling and know where things get hard
-- Anyone who looked at this and thought "I'd actually pay for this"
+- Anyone who looked at this and thought *"I'd actually pay for this"*
 
 ---
 
 ## Status & Roadmap
 
 ```
-[NOW]     Beta UI prototype        ← you are here
-[NEXT]    Foundation (auth + DB schema + wallet CRUD)
+[NOW]     Beta UI prototype              ← you are here
+[NEXT]    Foundation (auth + DB + wallet CRUD)
 [THEN]    Indexing engine (the hard part)
 [LATER]   Task engine + analytics dashboard
 [LATER]   AI insight layer
