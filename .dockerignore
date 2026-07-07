@@ -1,0 +1,41 @@
+# ── Version control ────────────────────────────────────────────────────────────
+.git
+.gitignore
+
+# ── Build artifacts (rebuilt inside Docker, should not be copied in) ───────────
+.next
+out
+build
+coverage
+*.tsbuildinfo
+
+# ── Local env files — secrets must NEVER enter the image ──────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+
+# ── Node dependencies (reinstalled inside the image via npm ci) ───────────────
+node_modules
+
+# ── Editor / OS junk ───────────────────────────────────────────────────────────
+.DS_Store
+*.pem
+.vscode
+.idea
+Thumbs.db
+
+# ── Docker files (not needed inside the image) ────────────────────────────────
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ── Documentation / tooling ───────────────────────────────────────────────────
+README.md
+AGENTS.md
+CLAUDE.md
+eslint.config.mjs
+
+# ── CI/CD ─────────────────────────────────────────────────────────────────────
+.github

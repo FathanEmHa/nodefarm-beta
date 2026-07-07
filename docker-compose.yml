@@ -1,0 +1,64 @@
+services:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # NodeFarm — Next.js 16 Airdrop Farming Tracker
+  #
+  # This is the only container needed. NodeFarm has:
+  #   • No database  (all data is in-memory mock data)
+  #   • No queue     (no background job processing)
+  #   • No Redis     (no session store / cache backend needed)
+  #   • No scheduler (no cron jobs)
+  #
+  # The container joins the external proxy-tier network so that Nginx Proxy
+  # Manager (NPM) can route HTTPS traffic to it without exposing any host port.
+  # ─────────────────────────────────────────────────────────────────────────────
+  nodefarm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* vars are inlined into the JS bundle at build time.
+        # Set the real value in your .env file on the VPS before running
+        # `docker compose up --build`.
+        NEXT_PUBLIC_QUICKNODE_RPC_URL: ${NEXT_PUBLIC_QUICKNODE_RPC_URL}
+
+    image: nodefarm:latest
+    container_name: nodefarm
+    restart: unless-stopped
+
+    # No ports are published to the Docker host.
+    # NPM communicates with this container entirely over the proxy-tier network.
+    # Uncomment the line below ONLY for local debugging:
+    # ports:
+    #   - "127.0.0.1:3000:3000"
+
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      # Server-side secret — read at runtime, NOT baked into the bundle.
+      GOOGLE_GENERATIVE_AI_API_KEY: ${GOOGLE_GENERATIVE_AI_API_KEY}
+
+    networks:
+      - proxy-tier
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://localhost:3000/', (r) => { process.exit(r.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ──────────────────────────────────────────────────────────────────────────────
+# External network — must already exist on the Docker host.
+# If it doesn't exist yet, create it once with:
+#   docker network create proxy-tier
+# ──────────────────────────────────────────────────────────────────────────────
+networks:
+  proxy-tier:
+    external: true
